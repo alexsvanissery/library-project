@@ -57,9 +57,13 @@ function ViewLibrary() {
               <div className="card h-100 shadow-sm book-card">
                 <Link to={`/view/${item.id}`}>
                   <img
-                    src={`http://127.0.0.1:8000${item.image}`}
+                    src={`${import.meta.env.VITE_API_URL.replace("/api/", "")}${item.image}`}
                     className="card-img-top"
-                    style={{ height: "200px", objectFit: "contain",padding:"10px" }}
+                    style={{
+                      height: "200px",
+                      objectFit: "contain",
+                      padding: "10px",
+                    }}
                     alt={item.name}
                   />
                 </Link>
