@@ -20,17 +20,15 @@ function LibraryDetails() {
     <div className="container mt-4">
       <div className="card p-4">
         <h3 className="mb-3">{item.name}</h3>
-
+        
+        const API_URL = import.meta.env.VITE_API_URL.replace("/api/", "");
         <img
-          src={`http://127.0.0.1:8000${item.image}`}
+          src={`${API_URL}${item.image}`}
           alt={item.name}
           style={{ width: "200px", marginBottom: "15px" }}
         />
-
         <h5>Price: ₹ {item.price}</h5>
-
         <hr />
-
         <h6>Description</h6>
         <p>{item.description}</p>
       </div>
