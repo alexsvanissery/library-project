@@ -5,60 +5,53 @@ export default function PasswordModal({ show, onClose, onConfirm }) {
 
   if (!show) return null;
 
-  const handleSubmit = () => {
+  const handleConfirm = () => {
     onConfirm(password);
     setPassword("");
   };
 
   return (
-    <div style={styles.overlay}>
-      <div style={styles.modal}>
+    <div style={overlayStyle}>
+      <div style={modalStyle}>
         <h4>Admin Access Required</h4>
 
         <input
           type="password"
+          className="form-control mt-2"
           placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
         />
 
-        <div style={styles.buttons}>
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSubmit}>Confirm</button>
+        <div className="mt-3 d-flex justify-content-between">
+          <button className="btn btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
+
+          <button className="btn btn-primary" onClick={handleConfirm}>
+            Confirm
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-const styles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "rgba(0,0,0,0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modal: {
-    background: "#fff",
-    padding: "20px",
-    borderRadius: "8px",
-    width: "300px",
-    textAlign: "center",
-  },
-  input: {
-    width: "100%",
-    padding: "8px",
-    marginTop: "10px",
-  },
-  buttons: {
-    marginTop: "15px",
-    display: "flex",
-    justifyContent: "space-between",
-  },
+const overlayStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  background: "rgba(0,0,0,0.5)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const modalStyle = {
+  background: "white",
+  padding: "20px",
+  borderRadius: "8px",
+  width: "320px",
 };
