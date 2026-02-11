@@ -83,19 +83,9 @@ function ViewLibrary() {
 
                   <p className="card-text">₹ {item.price}</p>
 
-                  <Link
-                    className="btn btn-warning btn-sm me-2"
-                    to={`/edit/${item.id}`}
-                  >
-                    Edit
-                  </Link>
+                  <Link className="btn btn-warning btn-sm me-2">Edit</Link>
 
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => deleteItem(item.id)}
-                  >
-                    Delete
-                  </button>
+                  <button className="btn btn-danger btn-sm">Delete</button>
                 </div>
               </div>
             </div>
