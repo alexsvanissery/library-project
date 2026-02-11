@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { Link } from "react-router-dom";
+import PasswordModal from "../components/PasswordModal";
 
 function ViewLibrary() {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [showModal, setShowModal] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   const itemsPerPage = 8;
 
@@ -21,7 +25,20 @@ function ViewLibrary() {
     });
   };
 
-  // Filter items based on search
+  // Password verification
+  const ADMIN_PASS = "1234";
+
+  const handleConfirm = (pass) => {
+    if (pass === ADMIN_PASS) {
+      navigate(`/edit/${pendingDeleteId}`);
+    } else {
+      alert("Wrong password");
+    }
+
+    setShowModal(false);
+  };
+
+  // Search filter
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -44,7 +61,7 @@ function ViewLibrary() {
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          setCurrentPage(1); // reset to page 1 when searching
+          setCurrentPage(1);
         }}
       />
 
@@ -83,9 +100,25 @@ function ViewLibrary() {
 
                   <p className="card-text">₹ {item.price}</p>
 
-                  <Link className="btn btn-warning btn-sm me-2">Edit</Link>
+                  <button
+                    className="btn btn-warning btn-sm me-2"
+                    onClick={() => {
+                      setPendingDeleteId(item.id);
+                      setShowModal(true);
+                    }}
+                  >
+                    Edit
+                  </button>
 
-                  <button className="btn btn-danger btn-sm">Delete</button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => {
+                      setPendingDeleteId(item.id);
+                      setShowModal(true);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
@@ -93,7 +126,7 @@ function ViewLibrary() {
         })}
       </div>
 
-      {/* Pagination Buttons */}
+      {/* Pagination */}
       <div className="d-flex justify-content-center mt-3">
         {[...Array(totalPages)].map((_, index) => (
           <button
@@ -107,6 +140,13 @@ function ViewLibrary() {
           </button>
         ))}
       </div>
+
+      {/* Password Modal */}
+      <PasswordModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 }
