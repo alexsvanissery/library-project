@@ -13,7 +13,6 @@ function ViewLibrary() {
   const [actionType, setActionType] = useState(null);
 
   const navigate = useNavigate();
-
   const itemsPerPage = 8;
 
   useEffect(() => {
@@ -24,35 +23,33 @@ function ViewLibrary() {
 
   const deleteItem = (id) => {
     API.delete(`library/${id}/`).then(() => {
-      setItems(items.filter((item) => item.id !== id));
+      setItems((prev) => prev.filter((item) => item.id !== id));
     });
   };
 
-  // Password verification
   const ADMIN_PASS = "1234";
 
   const handleConfirm = (pass) => {
-    if (pass === ADMIN_PASS) {
-      if (actionType === "edit") {
-        navigate(`/edit/${pendingId}`);
-      }
-
-      if (actionType === "delete") {
-        deleteItem(pendingId);
-      }
-    } else {
+    if (pass !== ADMIN_PASS) {
       alert("Wrong password");
+      return;
+    }
+
+    if (actionType === "delete") {
+      deleteItem(pendingId);
+    }
+
+    if (actionType === "edit") {
+      navigate(`/edit/${pendingId}`);
     }
 
     setShowModal(false);
   };
 
-  // Search filter
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  // Pagination logic
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirst, indexOfLast);
@@ -109,7 +106,6 @@ function ViewLibrary() {
 
                   <p className="card-text">₹ {item.price}</p>
 
-                  {/* Edit Button */}
                   <button
                     className="btn btn-warning btn-sm me-2"
                     onClick={() => {
@@ -121,7 +117,6 @@ function ViewLibrary() {
                     Edit
                   </button>
 
-                  {/* Delete Button */}
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => {
@@ -139,7 +134,6 @@ function ViewLibrary() {
         })}
       </div>
 
-      {/* Pagination */}
       <div className="d-flex justify-content-center mt-3">
         {[...Array(totalPages)].map((_, index) => (
           <button
@@ -154,7 +148,6 @@ function ViewLibrary() {
         ))}
       </div>
 
-      {/* Password Modal */}
       <PasswordModal
         show={showModal}
         onClose={() => setShowModal(false)}
