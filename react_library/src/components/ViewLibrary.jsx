@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordModal from "../components/PasswordModal";
 
 function ViewLibrary() {
@@ -9,7 +9,10 @@ function ViewLibrary() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [showModal, setShowModal] = useState(false);
-  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  const [pendingId, setPendingId] = useState(null);
+  const [actionType, setActionType] = useState(null);
+
+  const navigate = useNavigate();
 
   const itemsPerPage = 8;
 
@@ -30,7 +33,13 @@ function ViewLibrary() {
 
   const handleConfirm = (pass) => {
     if (pass === ADMIN_PASS) {
-      navigate(`/edit/${pendingDeleteId}`);
+      if (actionType === "edit") {
+        navigate(`/edit/${pendingId}`);
+      }
+
+      if (actionType === "delete") {
+        deleteItem(pendingId);
+      }
     } else {
       alert("Wrong password");
     }
@@ -100,20 +109,24 @@ function ViewLibrary() {
 
                   <p className="card-text">₹ {item.price}</p>
 
+                  {/* Edit Button */}
                   <button
                     className="btn btn-warning btn-sm me-2"
                     onClick={() => {
-                      setPendingDeleteId(item.id);
+                      setPendingId(item.id);
+                      setActionType("edit");
                       setShowModal(true);
                     }}
                   >
                     Edit
                   </button>
 
+                  {/* Delete Button */}
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => {
-                      setPendingDeleteId(item.id);
+                      setPendingId(item.id);
+                      setActionType("delete");
                       setShowModal(true);
                     }}
                   >
