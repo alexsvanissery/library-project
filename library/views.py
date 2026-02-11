@@ -6,12 +6,12 @@ from rest_framework import status
 
 from .models import Library
 from .serializer import LibrarySerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny
 
 class LibraryAPI(APIView):
     queryset = Library.objects.all()
     serializer_class = LibrarySerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
     def get(self,request,id=None):
         if id:
