@@ -20,10 +20,9 @@ function LibraryDetails() {
     <div className="container mt-4">
       <div className="card p-4">
         <h3 className="mb-3">{item.name}</h3>
-        
-        const API_URL = import.meta.env.VITE_API_URL.replace("/api/", "");
+
         <img
-          src={`${API_URL}${item.image}`}
+          src={`https://library-project-xss6.onrender.com${item.image}`}
           alt={item.name}
           style={{ width: "200px", marginBottom: "15px" }}
         />
