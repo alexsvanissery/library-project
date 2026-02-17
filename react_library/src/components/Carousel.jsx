@@ -4,7 +4,7 @@ function Carousel() {
   return (
     <div className="container mt-3">
       <div className="alert alert-info text-center">
-        Django + React Library CRUD / Edit & Delete buttons are disabled
+        Django + React Library CRUD / Edit & Delete buttons are password-protected
       </div>
     </div>
   );
