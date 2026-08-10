@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AdminLogin from "./components/AdminLogin";
-import Cart from "./components/Cart";
+import Cart from "./components/cart";
 import Navbar from "./components/Navbar";
 import AddLibrary from "./components/AddLibrary";
 import ViewLibrary from "./components/ViewLibrary";
