@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
 
+
 function ViewLibrary() {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [loading, setLoading] = useState(true);
+  
   const navigate = useNavigate();
 
   const itemsPerPage = 8;
@@ -14,15 +16,20 @@ function ViewLibrary() {
   // Check whether an admin is currently logged in
   const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-  useEffect(() => {
-    API.get("library/")
-      .then((res) => {
-        setItems(res.data.results || res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+useEffect(() => {
+  setLoading(true);
+
+  API.get("library/")
+    .then((res) => {
+      setItems(res.data.results || res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, []);
 
   // Delete book - admin only
   const deleteItem = (id) => {
@@ -132,8 +139,11 @@ function ViewLibrary() {
 
       {/* Results Count */}
       <div className="results-info mb-3">
-        {filteredItems.length} {filteredItems.length === 1 ? "book" : "books"}{" "}
-        found
+        {loading
+          ? "Loading books..."
+          : `${filteredItems.length} ${
+              filteredItems.length === 1 ? "book" : "books"
+            } found`}
       </div>
 
       {/* Books */}
@@ -222,7 +232,15 @@ function ViewLibrary() {
       </div>
 
       {/* No Results */}
-      {currentItems.length === 0 && (
+      {loading ? (
+        <div className="empty-state">
+          <div className="empty-icon">📚</div>
+
+          <h4>Loading books...</h4>
+
+          <p>The library may take a few seconds to wake up.</p>
+        </div>
+      ) : currentItems.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📖</div>
 
@@ -230,7 +248,7 @@ function ViewLibrary() {
 
           <p>Try searching with a different book name.</p>
         </div>
-      )}
+      ) : null}
 
       {/* Pagination */}
       {totalPages > 1 && (
